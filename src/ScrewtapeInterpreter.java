@@ -153,10 +153,10 @@ public class ScrewtapeInterpreter {
 
     Map<Integer, Integer> bracket = bracketMap(program);
     // For closing brackets
-    Map<Integer, Integer> reverse = new HashMap<>();
+    Map<Integer, Integer> closingBracket = new HashMap<>();
 
     for (Map.Entry<Integer, Integer> entry : bracket.entrySet()) {
-        reverse.put(entry.getValue(), entry.getKey());
+        closingBracket.put(entry.getValue(), entry.getKey());
     }
 
     tapeHead = new Node(0);
@@ -188,13 +188,13 @@ public class ScrewtapeInterpreter {
         tapePointer.value--;
       } else if (c == '.') {
         output.append((char) tapePointer.value);
-      } else if (c == '[') {
-        if (tapePointer.value == 0) {
-          i = reverse.get(i);
-        }
       } else if (c == ']') {
         if (tapePointer.value != 0) {
-          i = bracket.get(i);
+          i = bracket.get(i) - 1;
+          // Returns to the start of the bracket
+          if (tapePointer.value == 0) {
+            i = closingBracket.get(i);
+          }
         }
       }
     }
