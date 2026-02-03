@@ -150,6 +150,54 @@ public class ScrewtapeInterpreter {
   public String execute(String program) {
     // TODO: Implement this
     // If you get stuck, you can look at hint.md for a hint
-    return null;
+
+    Map<Integer, Integer> bracket = bracketMap(program);
+    // For closing brackets
+    Map<Integer, Integer> reverse = new HashMap<>();
+
+    for (Map.Entry<Integer, Integer> entry : bracket.entrySet()) {
+        reverse.put(entry.getValue(), entry.getKey());
+    }
+
+    tapeHead = new Node(0);
+    tapePointer = tapeHead;
+
+    StringBuilder output = new StringBuilder();
+
+    for (int i = 0; i < program.length(); i++) {
+      char c = program.charAt(i);
+      
+      if (c == '>') {
+        if (tapePointer.next == null) {
+          Node temp = new Node(0);
+          tapePointer.next = temp;
+          temp.prev = tapePointer;
+        }
+        tapePointer = tapePointer.next;
+      } else if (c == '<') {
+        if (tapePointer.prev == null) {
+          Node temp = new Node(0);
+          tapePointer.prev = temp;
+          temp.next = tapePointer;
+          tapeHead = temp;
+        }
+        tapePointer = tapePointer.prev;
+      } else if (c == '+') {
+        tapePointer.value++;
+      } else if (c == '-') {
+        tapePointer.value--;
+      } else if (c == '.') {
+        output.append((char) tapePointer.value);
+      } else if (c == '[') {
+        if (tapePointer.value == 0) {
+          i = reverse.get(i);
+        }
+      } else if (c == ']') {
+        if (tapePointer.value != 0) {
+          i = bracket.get(i);
+        }
+      }
+    }
+    return output.toString();
   }
 }
