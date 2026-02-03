@@ -94,4 +94,20 @@ class NodeTest {
     List<Integer> values = head.toList();
     assertEquals(List.of(10), values);
   }
+
+  @Test
+  void testToListWithTwoValues() {
+    // Arrange
+    Node head = new Node(8);
+    Node tail = new Node(0);
+
+    head.next = tail;
+    tail.prev = head;
+
+    // Act
+    List<Integer> values = head.toList();
+
+    // Assert
+    assertEquals(List.of(8, 0), values);
+  }
 }
