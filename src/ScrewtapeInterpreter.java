@@ -152,12 +152,6 @@ public class ScrewtapeInterpreter {
     // If you get stuck, you can look at hint.md for a hint
 
     Map<Integer, Integer> bracket = bracketMap(program);
-    // For closing brackets
-    Map<Integer, Integer> closingBracket = new HashMap<>();
-
-    for (Map.Entry<Integer, Integer> entry : bracket.entrySet()) {
-        closingBracket.put(entry.getValue(), entry.getKey());
-    }
 
     tapeHead = new Node(0);
     tapePointer = tapeHead;
@@ -191,10 +185,6 @@ public class ScrewtapeInterpreter {
       } else if (c == ']') {
         if (tapePointer.value != 0) {
           i = bracket.get(i) - 1;
-          // Returns to the start of the bracket
-          if (tapePointer.value == 0) {
-            i = closingBracket.get(i);
-          }
         }
       }
     }
